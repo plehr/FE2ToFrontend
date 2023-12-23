@@ -45,7 +45,7 @@ public function newMission(string $time, string $descr){
 }
 
 public function getMissions(){
-    $stmt = $this->con->prepare("SELECT UNIX_TIMESTAMP(timest) as timest, descr FROM " . $this->table . " ORDER BY timest DESC");
+    $stmt = $this->con->prepare("SELECT UNIX_TIMESTAMP(timest) as timest, descr FROM " . $this->table . " WHERE timest < (NOW() - INTERVAL 12 HOUR) ORDER BY timest DESC");
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
