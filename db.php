@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/Berlin');
 
 class datab 
 {
@@ -43,6 +44,13 @@ public function newMission(string $time, string $descr){
     $stmt->close();
 }
 
+public function getMissions(){
+    $stmt = $this->con->prepare("SELECT UNIX_TIMESTAMP(timest) as timest, descr FROM " . $this->table . " ORDER BY timest DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
+}
 
 function __destruct() {
     $this->con->close();
