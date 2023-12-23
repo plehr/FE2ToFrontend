@@ -21,6 +21,11 @@ if ( !$this->con->query( "DESCRIBE `" . $this->table . "`" ) ) {
     echo "Error creating table: " . $this->con->error;
   }
 }
+
+if ( !$this->con->query( "DELETE FROM `" . $this->table . "` WHERE timest < (NOW() - INTERVAL 14 DAY)" ) ) {
+  echo "Error creating table: " . $this->con->error;
+}
+
 }
 
 private function getSchema() {
