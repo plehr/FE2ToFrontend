@@ -27,26 +27,21 @@ private function getSchema() {
   return "CREATE TABLE " . $this->table . "
   (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   descr VARCHAR(50) NOT NULL,
-  timest TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  timest TIMESTAMP NOT NULL
   )";
 }
 
-public function newMission(string $date, string $time, string $descr){
-  echo $date . "<br>";
-  echo $time . "<br>";
-  echo $descr . "<br>";
-
-  $stmt = $this->con->prepare("INSERT INTO " . $this->table . "  (descr,timest) VALUES (?,?)   ");
-$stmt->bind_param("ss", $descr,$time);
-$stmt->execute();
-$stmt->close();
+public function newMission(string $time, string $descr){
+    $stmt = $this->con->prepare("INSERT INTO " . $this->table . " (descr,timest) VALUES (?,FROM_UNIXTIME(?))");
+    $stmt->bind_param("ss", htmlspecialchars($descr), substr($time, 0, 10));
+    $stmt->execute();
+    $stmt->close();
 }
 
 
 function __destruct() {
     $this->con->close();
   }
-
 }
 
 ?>
